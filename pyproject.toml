@@ -1,0 +1,22 @@
+[project]
+name = "provenance-demo"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=2.13.0",
+    "psycopg[binary]>=3.3.9",
+    "temporalio>=1.36.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.5.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+pythonpath = ["."]
+testpaths = ["tests"]
