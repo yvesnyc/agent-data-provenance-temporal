@@ -1,5 +1,7 @@
 # Agent data provenance with Temporal + Postgres
 
+![Every row an agent writes links back to what produced it: agent code commit, model, Temporal run history, and the exact source rows read](docs/social-preview.png)
+
 On LinkedIn I posted about two types of agent harness generated events that relate to data record creation.
 
 Coding agent harnesses coordinate around GitHub commits at a scale of ~10 agents. (at least that's my level of tolerance)
