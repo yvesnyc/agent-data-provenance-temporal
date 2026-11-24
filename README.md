@@ -1,5 +1,15 @@
 # Agent data provenance with Temporal + Postgres
 
+On LinkedIn I posted about two types of agent harness generated events that relate to data record creation.
+
+Coding agent harnesses coordinate around GitHub commits at a scale of ~10 agents. (at least that's my level of tolerance)
+General agent harnesses can scale around ~10000 agents on Temporal.
+
+Coding agents generate code that create records. The general agents produce data records as part of a request response.
+
+We want to keep track of which agents produced records in a table as part of the data provenance. Temporal is a natural
+platform to leverage because of the durable execution management. The addition of a provenance column ("_provenance") holding this information as a compact JSONB makes it a useful for debugging as well as audit in regulated domains.
+
 A runnable demo of this pattern: every row an agent writes carries a compact
 `_provenance` JSONB column (IDs and hashes, not copies), and Temporal's event
 history is the detailed record. Lineage is traced offline, at audit time.
@@ -136,3 +146,7 @@ uv run pytest -q
 - Uses the Temporal time-skipping test server (downloaded automatically by `temporalio`) and a
   separate `provenance_demo_test` database, rebuilt on each run.
 - Set `TEST_DATABASE_URL` to override the database. Tests are skipped if Postgres is unreachable.
+
+## License
+
+MIT. See [LICENSE](LICENSE). The sample data is synthetic; this is a demo, not a validated system for regulated use.
