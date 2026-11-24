@@ -29,7 +29,12 @@ def _git(repo: Path, *args: str) -> str:
 
 @lru_cache(maxsize=1)
 def agent_code_commit() -> str:
-    """Short SHA of this project's code (the agent's own code). '-dirty' if uncommitted changes."""
+    """Short SHA of this project's code (the agent's own code). '-dirty' if uncommitted changes.
+
+    Cached for the life of the process: Python loads the agent code once, so the
+    commit must describe the code *as loaded*. worker.py calls this at startup,
+    right after the imports, so edits made while the worker runs can't change it.
+    """
     try:
         sha = _git(config.PROJECT_ROOT, "rev-parse", "--short", "HEAD")
     except subprocess.CalledProcessError:
