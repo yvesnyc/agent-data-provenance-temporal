@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1280px; height: 640px; }
+  body {
+    font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    background: #0f1720; color: #e6edf3; padding: 44px 56px 36px;
+    display: flex; flex-direction: column; gap: 26px;
+  }
+  .kicker { font-size: 17px; letter-spacing: .14em; text-transform: uppercase; color: #7dd3c0; font-weight: 600; }
+  h1 { font-size: 44px; line-height: 1.12; font-weight: 750; margin-top: 8px; letter-spacing: -.01em; }
+  h1 em { font-style: normal; color: #7dd3c0; }
+  .main { display: flex; gap: 0; align-items: stretch; flex: 1; }
+  .card {
+    width: 600px; background: #161f2b; border: 1px solid #2a3646; border-radius: 14px;
+    padding: 18px 22px; font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 19px; line-height: 1.62; display:flex; flex-direction:column; justify-content:center;
+  }
+  .card .hdr { font-family: inherit; color: #8b9bb0; font-size: 15px; margin-bottom: 10px; }
+  .card .hdr b { color: #e6edf3; font-weight: 600; }
+  .k { color: #9ecbff; } .s { color: #a5e3a1; } .p { color: #8b9bb0; }
+  .hl { border-radius: 4px; padding: 1px 3px; }
+  .h1c { background: rgba(250,204,21,.16); } .h2c { background: rgba(244,114,182,.16); }
+  .h3c { background: rgba(125,211,192,.16); } .h4c { background: rgba(147,197,253,.16); }
+  .arrows { width: 70px; position: relative; }
+  .targets { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+  .t { border-radius: 12px; padding: 12px 18px; border: 1px solid; background: #141c27; }
+  .t .lbl { font-size: 20px; font-weight: 700; }
+  .t .sub { font-size: 15.5px; color: #a9b6c6; margin-top: 3px; line-height: 1.35; }
+  .t1 { border-color: #facc15; } .t1 .lbl { color: #facc15; }
+  .t2 { border-color: #f472b6; } .t2 .lbl { color: #f472b6; }
+  .t3 { border-color: #7dd3c0; } .t3 .lbl { color: #7dd3c0; }
+  .t4 { border-color: #93c5fd; } .t4 .lbl { color: #93c5fd; }
+  .foot { display: flex; justify-content: space-between; align-items: center; font-size: 17px; color: #8b9bb0; }
+  .foot .url { color: #e6edf3; font-family: "SF Mono", Menlo, monospace; font-size: 18px; }
+  svg { position: absolute; inset: 0; overflow: visible; }
+</style></head>
+<body>
+  <div>
+    <div class="kicker">Data provenance for AI agents</div>
+    <h1>Every row an agent writes <em>links back to what produced it</em></h1>
+  </div>
+
+  <div class="main">
+    <div class="card" id="card">
+      <div class="hdr">claim_summaries · <b>_provenance</b> (JSONB)</div>
+<div><span class="p">{</span></div>
+<div>&nbsp;&nbsp;<span class="k">"agent"</span><span class="p">: {</span></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">"name"</span><span class="p">:</span> <span class="s">"summarizer"</span><span class="p">,</span> <span class="k">"version"</span><span class="p">:</span> <span class="s">"3"</span><span class="p">,</span></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hl h2c" id="a2"><span class="k">"commit"</span><span class="p">:</span> <span class="s">"52a3a79"</span></span><span class="p">,</span></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hl h4c" id="a4"><span class="k">"model"</span><span class="p">:</span> <span class="s">"claude-opus-5-5"</span></span><span class="p">},</span></div>
+<div>&nbsp;&nbsp;<span class="hl h1c" id="a1"><span class="k">"wf"</span><span class="p">:</span> <span class="s">"claims-1"</span></span><span class="p">,</span></div>
+<div>&nbsp;&nbsp;<span class="hl h1c"><span class="k">"run"</span><span class="p">:</span> <span class="s">"01a20dff-670e-…"</span></span><span class="p">,</span></div>
+<div>&nbsp;&nbsp;<span class="hl h3c" id="a3"><span class="k">"sources"</span><span class="p">: [</span><span class="s">"claims:1"</span><span class="p">,</span> <span class="s">"orders:1181"</span><span class="p">,</span></span></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hl h3c"><span class="s">"orders:1182"</span><span class="p">,</span> <span class="s">"patients:77"</span><span class="p">]</span></span></div>
+<div><span class="p">}</span></div>
+    </div>
+
+    <div class="arrows"><svg id="svg"></svg></div>
+
+    <div class="targets">
+      <div class="t t2" id="b2"><div class="lbl">Git commit of the agent code</div>
+        <div class="sub">The exact code that ran; for agent-written code, trailers link to the agent's run</div></div>
+      <div class="t t4" id="b4"><div class="lbl">Model that answered</div>
+        <div class="sub">Including a fallback model, if one ran</div></div>
+      <div class="t t1" id="b1"><div class="lbl">Temporal run history</div>
+        <div class="sub">Every step, input, retry and output of the agent's run</div></div>
+      <div class="t t3" id="b3"><div class="lbl">Exact source rows read</div>
+        <div class="sub">IDs, not copies: impact analysis is one SQL query</div></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>Python · Temporal · Postgres JSONB · Claude &nbsp;—&nbsp; runnable demo, MIT</span>
+    <span class="url">github.com/yvesnyc/agent-data-provenance-temporal</span>
+  </div>
+
+<script>
+  const svg = document.getElementById('svg'), box = svg.getBoundingClientRect();
+  const colors = {1:'#facc15',2:'#f472b6',3:'#7dd3c0',4:'#93c5fd'};
+  let defs = '<defs>';
+  for (const i of [1,2,3,4]) defs += `<marker id="m${i}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="${colors[i]}"/></marker>`;
+  let paths = defs + '</defs>';
+  const card = document.getElementById('card').getBoundingClientRect();
+  for (const i of [1,2,3,4]) {
+    const a = document.getElementById('a'+i).getBoundingClientRect();
+    const b = document.getElementById('b'+i).getBoundingClientRect();
+    const x1 = card.right - box.left - 2, y1 = a.top + a.height/2 - box.top;
+    const x2 = b.left - box.left - 3,  y2 = b.top + b.height/2 - box.top;
+    const sx = a.right - box.left + 28;
+    paths += `<path d="M${sx},${y1} L${x1},${y1} C${x1+40},${y1} ${x2-40},${y2} ${x2},${y2}" stroke="${colors[i]}" stroke-width="2.2" fill="none" stroke-dasharray="${sx < x1 ? '0' : '0'}" marker-end="url(#m${i})" opacity=".9"/>`;
+  }
+  svg.innerHTML = paths;
+</script>
+</body></html>
